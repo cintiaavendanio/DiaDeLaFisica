@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Día del Físico y la Física</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --deep: #050a1a;
+      --navy: #0b1535;
+      --indigo: #0f2460;
+      --gold: #c9a84c;
+      --gold-light: #f0cb6e;
+      --silver: #b8c8e8;
+      --white: #f0f4ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--deep);
+      color: var(--white);
+      font-family: 'Crimson Pro', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== STARFIELD ===== */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.4);
+      }
+    }
+
+    /* ===== ATOMS FLOATING ===== */
+    .atom-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .atom {
+      position: absolute;
+      border: 1px solid rgba(201, 168, 76, 0.12);
+      border-radius: 50%;
+      animation: rotateAtom var(--spd, 20s) linear infinite;
+      transform-origin: center;
+    }
+
+    .atom::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    @keyframes rotateAtom {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ===== PAGE LAYOUT ===== */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 60px 30px 80px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .header-eyebrow {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, #e8c870 80%, var(--silver) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .header-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: var(--silver);
+      opacity: 0.85;
+      margin-bottom: 28px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .divider-line {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .divider-line.right {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .divider-icon {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* ===== INVITATION CARD ===== */
+    .card {
+      background: linear-gradient(145deg, rgba(15, 36, 96, 0.55) 0%, rgba(11, 21, 53, 0.8) 100%);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 3px;
+      padding: 50px 55px;
+      margin-bottom: 35px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards;
+      backdrop-filter: blur(6px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .card-intro {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--silver);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .card-body {
+      font-size: 1.15rem;
+      line-height: 1.85;
+      color: #d0dcf0;
+      text-align: justify;
+    }
+
+    .card.delay1 {
+      animation-delay: 0.6s;
+    }
+
+    .card.delay2 {
+      animation-delay: 0.9s;
+    }
+
+    .card.delay3 {
+      animation-delay: 1.2s;
+    }
+
+    .card.delay4 {
+      animation-delay: 1.5s;
+    }
+
+    /* ===== DATE BOX ===== */
+    .date-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 35px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.0s;
+    }
+
+    .date-box {
+      background: linear-gradient(145deg, rgba(201, 168, 76, 0.08), rgba(201, 168, 76, 0.03));
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 2px;
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .date-box-corner {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.6;
+    }
+
+    .date-box-corner.tl {
+      top: 8px;
+      left: 8px;
+      border-width: 1px 0 0 1px;
+    }
+
+    .date-box-corner.tr {
+      top: 8px;
+      right: 8px;
+      border-width: 1px 1px 0 0;
+    }
+
+    .date-box-corner.bl {
+      bottom: 8px;
+      left: 8px;
+      border-width: 0 0 1px 1px;
+    }
+
+    .date-box-corner.br {
+      bottom: 8px;
+      right: 8px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .date-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .date-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .date-sub {
+      font-style: italic;
+      color: var(--silver);
+      font-size: 1rem;
+    }
+
+    /* ===== SCHEDULE ===== */
+    .schedule {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .schedule-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(201, 168, 76, 0.07);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 14px 22px;
+      border-radius: 2px;
+    }
+
+    .schedule-icon {
+      font-size: 1.4rem;
+    }
+
+    .schedule-time {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .schedule-desc {
+      font-size: 0.85rem;
+      color: var(--silver);
+      margin-top: 2px;
+    }
+
+    /* ===== WHY SECTION ===== */
+    .why-section {
+      background: linear-gradient(145deg, rgba(201, 168, 76, 0.06), rgba(15, 36, 96, 0.4));
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 3px;
+      padding: 40px 48px;
+      margin-bottom: 35px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.3s;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .why-subtitle {
+      font-style: italic;
+      color: var(--silver);
+      font-size: 1rem;
+      margin-bottom: 22px;
+      padding-left: 36px;
+    }
+
+    .why-body {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      color: #d0dcf0;
+      text-align: justify;
+    }
+
+    .highlight {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* ===== FORMULA DECO ===== */
+    .formula-strip {
+      text-align: center;
+      padding: 20px 0;
+      opacity: 0.25;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--silver);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.8s;
+    }
+
+    .footer-msg {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      font-size: 0.9rem;
+      color: var(--silver);
+      opacity: 0.7;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== CTA BUTTON ===== */
+    .cta-wrapper {
+      text-align: center;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.65s;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--deep);
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8963a 100%);
+      padding: 16px 38px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 24px rgba(201, 168, 76, 0.35), 0 0 0 1px rgba(201, 168, 76, 0.4);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201, 168, 76, 0.5), 0 0 0 1px rgba(201, 168, 76, 0.6);
+    }
+
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+
+    .cta-btn::before {
+      content: '⚛';
+      margin-right: 10px;
+      font-size: 1rem;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .card {
+        padding: 32px 24px;
+      }
+
+      .why-section {
+        padding: 30px 24px;
+      }
+
+      .date-section {
+        grid-template-columns: 1fr;
+      }
+
+      .schedule {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Starfield -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Atom decorations -->
+  <div class="atom-bg" id="atoms"></div>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <header class="header">
+      <p class="header-eyebrow">Invitación Oficial &nbsp;·&nbsp; Comunidad Educativa</p>
+      <h1 class="header-title">Día del Físico<br>y de la Física</h1>
+      <p class="header-subtitle">Una celebración del conocimiento que mueve el universo</p>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-icon">⚛</span>
+        <div class="divider-line right"></div>
+      </div>
+    </header>
+
+    <!-- INVITATION CARD -->
+    <div class="card delay1">
+      <p class="card-intro">
+        Con gran entusiasmo, los convocamos a celebrar junto a nosotros<br>
+        el <strong style="color:var(--gold-light)">Día del Físico y de la Física</strong>,<br>
+        una jornada dedicada a la ciencia que explica el cosmos.
+      </p>
+      <p class="card-body">
+        Extendemos esta invitación a todas las instituciones educativas del nivel
+        medio y superior para compartir actividades, reflexiones y el orgullo
+        de una disciplina que ha transformado la comprensión humana del mundo.
+        La física no es solo una ciencia: es el lenguaje con el que el universo
+        se revela ante quienes se atreven a preguntar.
+      </p>
+    </div>
+
+    <!-- DATE & TIME -->
+    <div class="date-section">
+      <div class="date-box">
+        <div class="date-box-corner tl"></div>
+        <div class="date-box-corner tr"></div>
+        <div class="date-box-corner bl"></div>
+        <div class="date-box-corner br"></div>
+        <div class="date-label">Fecha</div>
+        <div class="date-main">5 de Junio</div>
+        <div class="date-sub">Jueves · 2026</div>
+      </div>
+      <div class="date-box">
+        <div class="date-box-corner tl"></div>
+        <div class="date-box-corner tr"></div>
+        <div class="date-box-corner bl"></div>
+        <div class="date-box-corner br"></div>
+        <div class="date-label">Lugar</div>
+        <div class="date-main" style="font-size:1.15rem">Olga Cossettini</div>
+        <div class="date-sub">Sarmiento 2902</div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="card delay2">
+      <div class="date-label" style="text-align:center; margin-bottom:20px;">Horarios de los turnos</div>
+      <div class="schedule">
+        <div class="schedule-block">
+          <span class="schedule-icon">🌅</span>
+          <div>
+            <div class="schedule-time">14:00 — 17:00 hs</div>
+            <div class="schedule-desc">Turno Tarde</div>
+          </div>
+        </div>
+        <div class="schedule-block">
+          <span class="schedule-icon">🌙</span>
+          <div>
+            <div class="schedule-time">18:00 — 21:00 hs</div>
+            <div class="schedule-desc">Turno Noche</div>
+          </div>
+        </div>
+      </div>
+      <p class="card-body" style="margin-top:28px; text-align:center; font-style:italic; color:var(--silver);">
+        Ambas sesiones incluyen conferencias, demostraciones y un espacio de intercambio entre estudiantes y docentes de
+        distintas escuelas.
+      </p>
+    </div>
+
+    <div class="formula-strip">
+      E = mc² &nbsp;|&nbsp; F = ma &nbsp;|&nbsp; ΔE · Δt ≥ ℏ/2 &nbsp;|&nbsp; ∇ · B = 0 &nbsp;|&nbsp; S = k<sub>B</sub>
+      ln Ω &nbsp;|&nbsp; E = mc²
+    </div>
+
+    <!-- WHY JUNE 7 -->
+    <div class="why-section">
+      <div class="why-title">
+        <span>🔭</span> ¿Por qué el 7 de junio?
+      </div>
+      <div class="why-subtitle">El origen de una efeméride científica</div>
+      <p class="why-body">
+        El <span class="highlight">7 de junio</span> fue instituido como el <span class="highlight">Día del Físico y la
+          Física</span> en Argentina en conmemoración del nacimiento de <span class="highlight">Carlos Ulrrico
+          Mouchard</span>, uno de los pioneros de la física experimental en nuestro país, cuya labor sentó bases
+        fundamentales para la enseñanza e investigación en esta disciplina.
+        <br><br>
+        En esa misma fecha, la comunidad científica eligió celebrar a todos los profesionales, docentes y estudiantes
+        que dedican su vocación a comprender las leyes que rigen la materia, la energía, el espacio y el tiempo. Desde
+        la mecánica clásica hasta la física cuántica, desde la termodinámica hasta la relatividad general, la física ha
+        sido el motor detrás de cada revolución tecnológica y conceptual de la humanidad.
+        <br><br>
+        Festejar el <span class="highlight">7 de junio</span> es reconocer que detrás de cada fórmula hay una historia
+        de curiosidad, esfuerzo y descubrimiento; es honrar a quienes miraron el universo con asombro y no descansaron
+        hasta entenderlo.
+      </p>
+    </div>
+
+    <!-- CLOSING CARD -->
+    <div class="card delay3">
+      <p class="card-body" style="text-align:center;">
+        Invitamos especialmente a <span style="color:var(--gold-light); font-style:italic;">directivos, docentes y
+          alumnos</span>
+        de todas las escuelas a participar de estas jornadas. La ciencia crece
+        cuando se comparte, y la física une a quienes quieren entender el mundo.
+        <br><br>
+        Confirmar asistencia y datos de la institución al organizador del evento.
+      </p>
+    </div>
+
+    <!-- CTA BUTTON -->
+    <div class="cta-wrapper">
+      <a class="cta-btn" href="https://iesoc.edu.ar/carreras/fisica/" target="_blank" rel="noopener noreferrer">
+        Conocé más sobre la carrera de Física
+      </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p class="footer-msg">
+        "Si quieres entender el universo,<br>
+        piensa en términos de energía, frecuencia y vibración."
+      </p>
+      <p class="footer-note">— Celebremos juntos la física · 5 de Junio · 2026 —</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Generate stars
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 180; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+      --dur: ${2 + Math.random() * 4}s;
+      --delay: ${Math.random() * 5}s;
+      opacity: ${0.1 + Math.random() * 0.5};
+    `;
+      starsContainer.appendChild(s);
+    }
+
+    // Generate rotating atom rings
+    const atomContainer = document.getElementById('atoms');
+    const positions = [
+      { top: '10%', left: '-5%', size: 220, spd: '25s' },
+      { top: '60%', right: '-8%', size: 280, spd: '32s' },
+      { top: '30%', right: '5%', size: 140, spd: '18s' },
+      { top: '75%', left: '3%', size: 170, spd: '22s' },
+    ];
+    positions.forEach(p => {
+      const a = document.createElement('div');
+      a.className = 'atom';
+      a.style.cssText = `
+      width: ${p.size}px; height: ${p.size}px;
+      top: ${p.top}; left: ${p.left || 'auto'}; right: ${p.right || 'auto'};
+      --spd: ${p.spd};
+    `;
+      atomContainer.appendChild(a);
+      // Second ring tilted
+      const a2 = document.createElement('div');
+      a2.className = 'atom';
+      a2.style.cssText = `
+      width: ${p.size}px; height: ${p.size * 0.45}px;
+      top: ${p.top}; left: ${p.left || 'auto'}; right: ${p.right || 'auto'};
+      margin-top: ${p.size * 0.28}px;
+      --spd: ${parseFloat(p.spd) * 1.4}s;
+      transform-origin: center;
+    `;
+      atomContainer.appendChild(a2);
+    });
+  </script>
+</body>
+
+</html>
